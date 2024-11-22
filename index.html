@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seeing It In Action</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #ffffff;
+            font-size: 150%;
+        }
+        section {
+            margin-bottom: 20px;
+            padding: 20px;
+            background-color: #ffffff;
+            display: none;
+            opacity: 0;
+            transition: opacity 0.5s ease-in;
+        }
+        h1, h3, h4 {
+            color: #333;
+            margin-top: 20px;
+        }
+        p, li {
+            line-height: 1.6;
+            color: #444;
+            margin-bottom: 20px;
+        }
+        .interactive-placeholder, .continue-button, .test-your-knowledge {
+            text-align: left;
+        }
+        .interactive-placeholder img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+        .test-your-knowledge {
+            background-color: #e6ffe6;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+        .test-your-knowledge h3 {
+            color: #28a745;
+            font-size: 0.75em;
+            margin-bottom: 5px;
+            margin-top: 5px;
+        }
+        .test-your-knowledge h4 {
+            color: #000;
+            font-size: 0.9em;
+            margin-top: 10px;
+            margin-bottom: 8px;
+        }
+        .test-your-knowledge p {
+            margin-bottom: 15px;
+        }
+        .check-button {
+            display: inline-block;
+            padding: 10px 20px;
+            margin-top: 15px;
+            color: #ffffff;
+            background-color: #28a745;
+            border-radius: 5px;
+            text-decoration: none;
+            cursor: pointer;
+            border: none;
+            font-size: 1em;
+        }
+        .continue-button {
+            display: inline-block;
+            padding: 10px 20px;
+            margin-top: 15px;
+            color: #ffffff;
+            background-color: #007bff;
+            border-radius: 5px;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <section id="section1">
+        <h1>Seeing It In Action</h1>
+        <p>Let's look at a real example. Imagine we're trying to predict ice cream sales based on temperature.</p>
+        <div class="interactive-placeholder">
+            <img src="/placeholder.svg?height=400&width=600" alt="Interactive graph showing both linear regression and neural network predictions for ice cream sales vs. temperature, with a clear non-linear relationship">
+        </div>
+        <div class="continue-button" onclick="showNextSection(2)">Continue</div>
+    </section>
+
+    <section id="section2">
+        <p>Notice how the relationship isn't quite linear? On very cold days, sales are consistently low. On very hot days, they plateau (there's only so much ice cream people can eat!). A linear model can't capture these nuances, but our neural network can.</p>
+        <div class="test-your-knowledge">
+            <h3>Test Your Knowledge</h3>
+            <h4>Why might a linear model struggle with ice cream sales prediction?</h4>
+            <div id="options">
+                <p><label><input type="radio" name="ice-cream-model" value="0"> It can only draw straight lines</label></p>
+                <p><label><input type="radio" name="ice-cream-model" value="1"> It's not sophisticated enough</label></p>
+                <p><label><input type="radio" name="ice-cream-model" value="2"> It uses different mathematics</label></p>
+            </div>
+            <button class="check-button" onclick="checkAnswer()">Check Answer</button>
+            <p id="result" style="display: none;"></p>
+            <p id="explanation" style="display: none;"></p>
+        </div>
+    </section>
+
+    <script>
+        document.getElementById("section1").style.display = "block";
+        document.getElementById("section1").style.opacity = "1";
+
+        function showNextSection(nextSectionId) {
+            const currentButton = event.target;
+            const nextSection = document.getElementById("section" + nextSectionId);
+            
+            currentButton.style.display = "none";
+            
+            nextSection.style.display = "block";
+            setTimeout(() => {
+                nextSection.style.opacity = "1";
+            }, 10);
+
+            setTimeout(() => {
+                nextSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 500);
+        }
+
+        function checkAnswer() {
+            const selectedAnswer = document.querySelector('input[name="ice-cream-model"]:checked');
+            const result = document.getElementById("result");
+            const explanation = document.getElementById("explanation");
+            const checkButton = document.querySelector(".check-button");
+
+            if (selectedAnswer) {
+                checkButton.style.display = "none";
+                result.style.display = "block";
+                explanation.style.display = "block";
+
+                const answers = [
+                    {
+                        correct: true,
+                        explanation: "Correct! Real-world relationships often involve curves, plateaus, and other non-linear patterns that straight lines just can't capture."
+                    },
+                    {
+                        correct: false,
+                        explanation: "It's not about sophistication - linear models are elegant and powerful. It's about the fundamental limitation of only being able to represent straight-line relationships."
+                    },
+                    {
+                        correct: false,
+                        explanation: "The mathematics isn't the issue - it's the linear constraint that limits the model's flexibility."
+                    }
+                ];
+
+                const answer = answers[parseInt(selectedAnswer.value)];
+                result.textContent = answer.correct ? "Correct!" : "Incorrect.";
+                result.style.color = answer.correct ? "#28a745" : "#dc3545";
+                explanation.textContent = answer.explanation;
+            }
+        }
+    </script>
+</body>
+</html>
